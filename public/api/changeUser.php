@@ -16,14 +16,7 @@ $pdo = $db->connect();
 
 $userID = $_POST['userID'];
 
-$sql = "SELECT u.id as userID, a.id as accountID, u.firstName, u.lastName, u.mobilephone, a.balance, a.currency
-    FROM users u
-    JOIN account a
-    on a.user_id = u.id AND u.id = $userID";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-
-$result = $stmt->fetchAll();
+$changeUser = new Classes\ChangeUser($pdo, $userID);
+$result = $changeUser->changeUser();
 
 echo json_encode($result);

@@ -15,14 +15,7 @@ $dotenv->load();
 $db = new Classes\MySQL();
 $pdo = $db->connect();
 
-$sql = "SELECT u.id as userID, a.id as accountID, u.firstName, u.lastName, u.mobilephone, a.balance, a.currency
-    FROM users u
-    JOIN account a
-    on a.user_id = u.id";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-
-$result = $stmt->fetchAll();
+$getUsers = new Classes\GetUsers($pdo);
+$result = $getUsers->getUsers();
 
 echo json_encode($result);

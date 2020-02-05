@@ -12,6 +12,7 @@
 <body>
     <div>
         <h1>Inloggad som <span id="username"></span></h1>
+        <h2>Konto: <span id="account"></span></h2>
         <h2>Valuta: <span id="currency"></span></h2>
         <h2>Balans: <span id="balance"></span></h2>
     </div>
@@ -24,10 +25,12 @@
     </div>
 
     <div id="bankTransfer">
-        <form id="transferForm" action="/">
-            <select name="" id="usersDrop">
+        <h1>Bank transfer</h1>
+        <form id="bankTransferForm" action="/">
+            <select name="bankTransferSelect" id="usersDrop">
 
             </select>
+            <input id="transferAmount" type="text">
             <button type="submit">Transfer</button>
         </form>
     </div>
