@@ -18,14 +18,14 @@ $(function() {
 
             for (let user of data) {
                 $('<option>', {
-                    html: user.firstName,
+                    html: user.firstName + ' (' + user.accountID + ')',
                     value: user.accountID
                 }).appendTo('#usersDrop');
             }
 
             for (let user of data) {
                 $('<option>', {
-                    html: user.firstName,
+                    html: user.firstName + ' (' + user.mobilephone + ')',
                     value: user.mobilephone
                 }).appendTo('#swishDrop');
             }
