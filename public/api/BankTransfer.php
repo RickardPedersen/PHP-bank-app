@@ -63,10 +63,10 @@ try {
     $currRate = $respObj->rates->$toCurr;
     $transfer->payment->currRate = $currRate;
 
-    $bankTransfer = $transfer->payment->transfer();
+    $bankTransfer = $transfer->transfer();
     //echo json_encode($bankTransfer);
 
-    $transfer->payment->saveTransaction($fromId, $toId, $amount);
+    //$transfer->saveTransaction($fromId, $toId, $amount);
     echo json_encode($transfer);
 } catch (Exception $e) {
     echo json_encode('Caught exception: ' . $e->getMessage());

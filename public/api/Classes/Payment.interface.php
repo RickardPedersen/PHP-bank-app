@@ -8,5 +8,5 @@ interface PaymentInterface
     public function checkBalance();
     public function checkReceiver();
     public function transfer();
-    public function saveTransaction($fromID, $toID, $fromAmount);
+    //public function saveTransaction($fromID, $toID, $fromAmount);
 }

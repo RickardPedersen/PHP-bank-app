@@ -2,13 +2,13 @@
 
 namespace Classes;
 
-use DateTime;
+//use DateTime;
 
 class TransferPayment implements PaymentInterface
 {
-    protected $pdo;
+    public $pdo;
     public $fromAccount;
-    protected $fromAmount;
+    public $fromAmount;
     public $toAccIdOrPhone;
     public $fromCurr;
     public $toCurr;
@@ -52,6 +52,11 @@ class TransferPayment implements PaymentInterface
 
     public function transfer()
     {
+    }
+
+    /*
+    public function transfer()
+    {
         if (!$this->receiverFound) {
             return false;
         }
@@ -68,7 +73,7 @@ class TransferPayment implements PaymentInterface
         $sql = "UPDATE account
             SET balance = balance+:amount
             WHERE id = :toId";
-        
+
         $convertedCurr = ($this->fromAmount * $this->currRate);
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':amount', $convertedCurr);
@@ -77,7 +82,9 @@ class TransferPayment implements PaymentInterface
 
         return true;
     }
+    */
 
+    /*
     public function saveTransaction($fromID, $toID, $fromAmount)
     {
         $sql = "SELECT currency
@@ -124,4 +131,5 @@ class TransferPayment implements PaymentInterface
         $stmt->execute();
         $resultsTwo = $stmt->fetchAll();
     }
+    */
 }
