@@ -7,6 +7,7 @@ $(function() {
             //console.log(data[0])
             $('#username').html(data[0].firstName + ' ' + data[0].lastName);
             $('#account').html(data[0].accountID)
+            $('#phone').html(data[0].mobilephone)
             $('#currency').html(data[0].currency)
             $('#balance').html(data[0].balance)
 
@@ -22,6 +23,13 @@ $(function() {
                     html: user.firstName,
                     value: user.accountID
                 }).appendTo('#usersDrop');
+            }
+
+            for (let user of data) {
+                $('<option>', {
+                    html: user.firstName,
+                    value: user.mobilephone
+                }).appendTo('#swishDrop');
             }
 
             // '#usersDrop'
@@ -88,6 +96,39 @@ $(function() {
                 //$('#username').html(data[0].firstName + ' ' + data[0].lastName);
                 //$('#currency').html(data[0].currency)
                 //$('#balance').html(newBalance)
+            },
+            error: function(a, b, c) {
+                console.log(a)
+                console.log(b)
+                console.log(c)
+            }
+        });
+        
+    });
+
+    $('#swishForm').on('submit', (e) => {
+        e.preventDefault();
+        console.log('Swish')
+
+        let fromPhone = $('#phone').html();
+        let toPhone = $('select[name=swishSelect]').val();
+        let amountInput = parseFloat($('#swishAmount').val()).toFixed(2);
+        console.log(amountInput)
+        let transferData = {
+            fromPhone: fromPhone,
+            toPhone: toPhone,
+            amount: amountInput
+        }
+        //console.log(user)
+        
+        $.ajax({
+            type: 'POST',
+            url: '../../api/SwishTransfer.php',
+            dataType: 'json',
+            data: transferData,
+            success: function(data) {
+                console.log(data)
+                
             },
             error: function(a, b, c) {
                 console.log(a)

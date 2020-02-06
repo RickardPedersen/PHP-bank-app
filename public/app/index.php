@@ -13,6 +13,7 @@
     <div>
         <h1>Inloggad som <span id="username"></span></h1>
         <h2>Konto: <span id="account"></span></h2>
+        <h2>Mobil: <span id="phone"></span></h2>
         <h2>Valuta: <span id="currency"></span></h2>
         <h2>Balans: <span id="balance"></span></h2>
     </div>
@@ -36,25 +37,15 @@
     </div>
 
     <div id="swish">
+        <h1>Swish</h1>
+        <form id="swishForm" action="/">
+            <select name="swishSelect" id="swishDrop">
 
+            </select>
+            <input id="swishAmount" type="text">
+            <button type="submit">Swish</button>
+        </form>
     </div>
-
-    <?php
-
-    /*
-require __DIR__ . '/../vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
-$dotenv->load();
-*/
-
-    //$userInfo = file_get_contents('../api/getUserInfo.php');
-    //var_dump($userInfo);
-    /*
-foreach ($userInfo as $value) {
-    print_r($value);
-}*/
-    ?>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

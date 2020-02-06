@@ -14,24 +14,26 @@ $dotenv->load();
 $db = new Classes\MySQL();
 $pdo = $db->connect();
 
-
 $amount = $_POST['amount'];
-$fromId = $_POST['fromAccount'];
-$toId = $_POST['toAccount'];
+$fromPhone = $_POST['fromPhone'];
+$toPhone = $_POST['toPhone'];
 
-//$amount = 100;
-//$fromId = 1;
-//$toId = 2;
-
-//$transfer = new Classes\BankTransferPayment($pdo, $fromId, $amount);
-//$balance = $transfer->checkBalance();
-//echo json_encode($balance);
-
-$paymentType = new Classes\BankTransferPayment($pdo, $fromId, $amount, $toId);
+$paymentType = new Classes\SwishTransferPayment($pdo, null, $amount, null);
 $transfer = new Classes\Transfer($paymentType);
+
+
+
+//echo json_encode($transfer);
+
 try {
-    if ($fromId === $toId) {
+    if ($fromPhone === $toPhone) {
         throw new Exception('Can not transfer to yourself.');
+    }
+
+    $userAcc = $transfer->payment->findAccountID($fromPhone, $toPhone);
+
+    if (!$userAcc) {
+        throw new Exception('Could not find you account id.');
     }
 
     $balance = $transfer->payment->checkBalance();
@@ -66,39 +68,8 @@ try {
     $bankTransfer = $transfer->payment->transfer();
     //echo json_encode($bankTransfer);
 
-    $transfer->payment->saveTransaction($fromId, $toId, $amount);
+    $transfer->payment->saveTransaction($transfer->payment->fromAccount, $transfer->payment->toAccIdOrPhone, $amount);
     echo json_encode($transfer);
 } catch (Exception $e) {
     echo json_encode('Caught exception: ' . $e->getMessage());
 }
-
-//$result = $balance;
-//echo $balance['balance'];
-
-/*
-$sql = "UPDATE account
-    SET balance = balance-:amount
-    WHERE id = :fromId";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':amount', $amount);
-$stmt->bindParam(':fromId', $fromId);
-$stmt->execute();
-
-$sql = "UPDATE account
-    SET balance = balance+:amount
-    WHERE id = :toId";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':amount', $amount);
-$stmt->bindParam(':toId', $toId);
-$stmt->execute();
-
-$result = $stmt->fetchAll();
-*/
-
-//$result = [$amount, $fromId, $toId];
-
-
-
-//echo json_encode($result);

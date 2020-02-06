@@ -7,9 +7,9 @@ use DateTime;
 class TransferPayment implements PaymentInterface
 {
     protected $pdo;
-    protected $fromAccount;
+    public $fromAccount;
     protected $fromAmount;
-    protected $toAccIdOrPhone;
+    public $toAccIdOrPhone;
     public $fromCurr;
     public $toCurr;
     public $currRate;
@@ -24,6 +24,10 @@ class TransferPayment implements PaymentInterface
         $this->toAccIdOrPhone = $toAccIdOrPhone;
         $this->enoughMoney = false;
         $this->receiverFound = false;
+    }
+
+    public function findAccountID($fromPhone, $toPhone)
+    {
     }
 
     public function checkBalance()
@@ -48,6 +52,30 @@ class TransferPayment implements PaymentInterface
 
     public function transfer()
     {
+        if (!$this->receiverFound) {
+            return false;
+        }
+
+        $sql = "UPDATE account
+            SET balance = balance-:amount
+            WHERE id = :fromId";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':amount', $this->fromAmount);
+        $stmt->bindParam(':fromId', $this->fromAccount);
+        $stmt->execute();
+
+        $sql = "UPDATE account
+            SET balance = balance+:amount
+            WHERE id = :toId";
+        
+        $convertedCurr = ($this->fromAmount * $this->currRate);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':amount', $convertedCurr);
+        $stmt->bindParam(':toId', $this->toAccIdOrPhone);
+        $stmt->execute();
+
+        return true;
     }
 
     public function saveTransaction($fromID, $toID, $fromAmount)
