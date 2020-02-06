@@ -1,15 +1,15 @@
-CREATE DATABASE  IF NOT EXISTS `bank` /*!40100 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `bank` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `bank`;
--- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
 -- Host: 127.0.0.1    Database: bank
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	5.7.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,14 +23,14 @@ USE `bank`;
 
 DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `balance` decimal(11,2) NOT NULL DEFAULT '0.00',
   `currency` varchar(5) NOT NULL DEFAULT 'SEK',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=863058 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=863058 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (355547,6,199520.96,'USD'),(529612,3,32449.54,'NOK'),(549855,10,828582.55,'NOK'),(573476,7,61028.84,'NOK'),(591838,1,53426.47,'SEK'),(628334,4,5672.00,'DKK'),(728059,8,99880.35,'DKK'),(742107,9,1000100.00,'SEK'),(788358,5,40179.10,'SEK'),(863057,2,206.25,'USD');
+INSERT INTO `account` VALUES (355547,6,199226.70,'USD'),(529612,3,36516.02,'NOK'),(549855,10,828692.69,'NOK'),(573476,7,61028.84,'NOK'),(591838,1,53605.57,'SEK'),(628334,4,4582.00,'DKK'),(728059,8,99880.35,'DKK'),(742107,9,1000100.00,'SEK'),(788358,5,40000.00,'SEK'),(863057,2,206.25,'USD');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +49,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transactions` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `from_amount` decimal(11,2) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `transactions` (
   PRIMARY KEY (`transaction_id`),
   KEY `from_user_id` (`from_account`,`to_account`),
   KEY `to_user_id` (`to_account`)
-) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `transactions` (
 
 LOCK TABLES `transactions` WRITE;
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
-INSERT INTO `transactions` VALUES (267,12.00,355547,'USD',110.14,529612,'NOK',9.178,'2020-02-06 06:39:00'),(268,100.00,573476,'NOK',10.90,355547,'USD',0.109,'2020-02-06 06:39:17'),(269,100.00,728059,'DKK',14.75,355547,'USD',0.148,'2020-02-06 06:43:54'),(270,100.00,728059,'DKK',14.75,355547,'USD',0.148,'2020-02-06 06:43:57');
+INSERT INTO `transactions` VALUES (267,12.00,355547,'USD',110.14,529612,'NOK',9.178,'2020-02-06 06:39:00'),(268,100.00,573476,'NOK',10.90,355547,'USD',0.109,'2020-02-06 06:39:17'),(269,100.00,728059,'DKK',14.75,355547,'USD',0.148,'2020-02-06 06:43:54'),(270,100.00,728059,'DKK',14.75,355547,'USD',0.148,'2020-02-06 06:43:57'),(271,100.00,355547,'USD',917.84,529612,'NOK',9.178,'2020-02-06 08:43:14'),(272,12.00,355547,'USD',110.14,549855,'NOK',9.178,'2020-02-06 08:51:36'),(273,100.00,355547,'USD',917.84,529612,'NOK',9.178,'2020-02-06 09:21:01'),(274,123.00,355547,'USD',1128.94,529612,'NOK',9.178,'2020-02-06 09:22:28'),(275,123.00,355547,'USD',1128.94,529612,'NOK',9.178,'2020-02-06 09:22:36'),(276,100.00,788358,'SEK',100.00,591838,'SEK',1.000,'2020-02-06 11:36:41'),(277,79.10,788358,'SEK',79.10,591838,'SEK',1.000,'2020-02-06 11:38:09'),(278,100.00,628334,'DKK',14.75,355547,'USD',0.148,'2020-02-06 13:33:02'),(279,-10.00,628334,'DKK',-13.54,529612,'NOK',1.354,'2020-02-06 13:33:45'),(280,-10.00,628334,'DKK',-13.54,529612,'NOK',1.354,'2020-02-06 13:33:47'),(281,1000.00,628334,'DKK',147.51,355547,'USD',0.148,'2020-02-06 13:34:04'),(282,10.00,628334,'DKK',1.48,355547,'USD',0.148,'2020-02-06 13:35:16');
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +82,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `firstName` varchar(255) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `users` (
   `mobilephone` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +112,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `vw_users`;
 /*!50001 DROP VIEW IF EXISTS `vw_users`*/;
 SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
+SET character_set_client = utf8;
 /*!50001 CREATE VIEW `vw_users` AS SELECT 
  1 AS `id`,
  1 AS `firstName`,
@@ -142,7 +142,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8_general_ci*/;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_users` AS select `u`.`id` AS `id`,`u`.`firstName` AS `firstName`,`u`.`lastName` AS `lastName`,`u`.`username` AS `username`,`u`.`password` AS `password`,`u`.`mobilephone` AS `mobilephone`,`a`.`id` AS `account_id`,((select sum(`transactions`.`to_amount`) from `transactions` where (`transactions`.`to_account` = `a`.`id`)) - (select sum(`transactions`.`from_amount`) from `transactions` where (`transactions`.`from_account` = `a`.`id`))) AS `balance` from (`users` `u` join `account` `a` on((`a`.`user_id` = `u`.`id`))) */;
@@ -159,4 +159,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-06  7:59:59
+-- Dump completed on 2020-02-06 16:06:01
