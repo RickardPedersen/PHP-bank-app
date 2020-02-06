@@ -19,14 +19,6 @@ $amount = $_POST['amount'];
 $fromId = $_POST['fromAccount'];
 $toId = $_POST['toAccount'];
 
-//$amount = 100;
-//$fromId = 1;
-//$toId = 2;
-
-//$transfer = new Classes\BankTransferPayment($pdo, $fromId, $amount);
-//$balance = $transfer->checkBalance();
-//echo json_encode($balance);
-
 $paymentType = new Classes\BankTransferPayment($pdo, $fromId, $amount, $toId);
 $transfer = new Classes\Transfer($paymentType);
 try {
@@ -40,65 +32,28 @@ try {
         throw new Exception('Not enough money in your account.');
     } else {
         $transfer->payment->enoughMoney = true;
-        //echo json_encode($transfer);
     }
 
     $receiver = $transfer->payment->checkReceiver();
-    //echo json_encode($receiver);
 
     if (!$receiver) {
         throw new Exception('Receiver account not found.');
     } else {
         $transfer->payment->receiverFound = true;
-        //echo json_encode($transfer);
     }
 
-    //echo "https://api.exchangeratesapi.io/latest?base=$transfer->fromCurr&symbols=$transfer->toCurr";
     $fromCurr = $transfer->payment->fromCurr;
     $toCurr = $transfer->payment->toCurr;
     $respObj = json_decode(
         file_get_contents("https://api.exchangeratesapi.io/latest?base=$fromCurr&symbols=$toCurr")
     );
-    //$toCurrency = $transfer->toCurr;
+
     $currRate = $respObj->rates->$toCurr;
     $transfer->payment->currRate = $currRate;
 
     $bankTransfer = $transfer->transfer();
-    //echo json_encode($bankTransfer);
 
-    //$transfer->saveTransaction($fromId, $toId, $amount);
     echo json_encode($transfer);
 } catch (Exception $e) {
     echo json_encode('Caught exception: ' . $e->getMessage());
 }
-
-//$result = $balance;
-//echo $balance['balance'];
-
-/*
-$sql = "UPDATE account
-    SET balance = balance-:amount
-    WHERE id = :fromId";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':amount', $amount);
-$stmt->bindParam(':fromId', $fromId);
-$stmt->execute();
-
-$sql = "UPDATE account
-    SET balance = balance+:amount
-    WHERE id = :toId";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':amount', $amount);
-$stmt->bindParam(':toId', $toId);
-$stmt->execute();
-
-$result = $stmt->fetchAll();
-*/
-
-//$result = [$amount, $fromId, $toId];
-
-
-
-//echo json_encode($result);

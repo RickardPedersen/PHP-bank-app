@@ -21,9 +21,9 @@ class MySQL
         $port = null
     ) {
         $this->hostname = $hostname ?? getenv('DB_HOST');
-        $this->username = $username ?? getenv('DB_USERNAME');
-        $this->password = $password ?? getenv('DB_PASSWORD');
-        $this->dbname = $dbname ?? getenv('DB_NAME');
+        $this->username = $username ?? getenv('DB_USER');
+        $this->password = $password ?? getenv('DB_PASS');
+        $this->dbname = $dbname ?? getenv('DB_DATABASE');
         $this->port = $port ?? getenv('DB_PORT');
         $this->charset = 'utf8mb4';
     }

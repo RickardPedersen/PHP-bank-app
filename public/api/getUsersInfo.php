@@ -1,6 +1,5 @@
 <?php
 
-
 // Allow any site to fetch this result.
 header("Access-Control-Allow-Origin: *");
 

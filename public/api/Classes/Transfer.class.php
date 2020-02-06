@@ -66,7 +66,7 @@ class Transfer
         
         $currencyRate = $this->payment->currRate;
         $toAmount = ($fromAmount * $currencyRate);
-        //$timeStamp = time();
+        
         $timeStamp = new \DateTime();
         $date = $timeStamp->format('Y-m-d H:i:s');
 

@@ -21,10 +21,6 @@ $toPhone = $_POST['toPhone'];
 $paymentType = new Classes\SwishTransferPayment($pdo, null, $amount, null);
 $transfer = new Classes\Transfer($paymentType);
 
-
-
-//echo json_encode($transfer);
-
 try {
     if ($fromPhone === $toPhone) {
         throw new Exception('Can not transfer to yourself.');
@@ -42,33 +38,27 @@ try {
         throw new Exception('Not enough money in your account.');
     } else {
         $transfer->payment->enoughMoney = true;
-        //echo json_encode($transfer);
     }
 
     $receiver = $transfer->payment->checkReceiver();
-    //echo json_encode($receiver);
 
     if (!$receiver) {
         throw new Exception('Receiver account not found.');
     } else {
         $transfer->payment->receiverFound = true;
-        //echo json_encode($transfer);
     }
 
-    //echo "https://api.exchangeratesapi.io/latest?base=$transfer->fromCurr&symbols=$transfer->toCurr";
     $fromCurr = $transfer->payment->fromCurr;
     $toCurr = $transfer->payment->toCurr;
     $respObj = json_decode(
         file_get_contents("https://api.exchangeratesapi.io/latest?base=$fromCurr&symbols=$toCurr")
     );
-    //$toCurrency = $transfer->toCurr;
+
     $currRate = $respObj->rates->$toCurr;
     $transfer->payment->currRate = $currRate;
 
     $bankTransfer = $transfer->transfer();
-    //echo json_encode($bankTransfer);
 
-    //$transfer->saveTransaction($transfer->payment->fromAccount, $transfer->payment->toAccIdOrPhone, $amount);
     echo json_encode($transfer);
 } catch (Exception $e) {
     echo json_encode('Caught exception: ' . $e->getMessage());
