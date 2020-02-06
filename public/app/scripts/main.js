@@ -55,7 +55,7 @@ $(function() {
                 $('#balance').html(data[0].balance)
             },
             error: function() {
-                console.log('asdasd')
+                //console.log('asdasd')
             }
             
         });
@@ -81,15 +81,17 @@ $(function() {
             dataType: 'json',
             data: transferData,
             success: function(data) {
-                let oldBalance = $('#balance').html();
-                let newBalance = parseInt(oldBalance - amountInput);
+                //let oldBalance = $('#balance').html();
+                //let newBalance = parseInt(oldBalance - amountInput);
                 console.log(data)
                 //$('#username').html(data[0].firstName + ' ' + data[0].lastName);
                 //$('#currency').html(data[0].currency)
-                $('#balance').html(newBalance)
+                //$('#balance').html(newBalance)
             },
-            error: function() {
-                console.log('asdasd')
+            error: function(a, b, c) {
+                console.log(a)
+                console.log(b)
+                console.log(c)
             }
         });
         
