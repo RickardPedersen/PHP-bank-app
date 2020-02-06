@@ -2,12 +2,17 @@
 
 namespace Classes;
 
+use DateTime;
+
 class TransferPayment implements PaymentInterface
 {
     protected $pdo;
     protected $fromAccount;
     protected $fromAmount;
     protected $toAccIdOrPhone;
+    public $fromCurr;
+    public $toCurr;
+    public $currRate;
     public $enoughMoney;
     public $receiverFound;
 
@@ -23,7 +28,7 @@ class TransferPayment implements PaymentInterface
 
     public function checkBalance()
     {
-        $sql = "SELECT balance
+        $sql = "SELECT balance, currency
             FROM account
             WHERE id = :fromAccount";
 
@@ -32,6 +37,7 @@ class TransferPayment implements PaymentInterface
         $stmt->execute();
 
         $result = $stmt->fetch();
+        $this->fromCurr = $result['currency'];
 
         return $result['balance'];
     }
@@ -42,5 +48,52 @@ class TransferPayment implements PaymentInterface
 
     public function transfer()
     {
+    }
+
+    public function saveTransaction($fromID, $toID, $fromAmount)
+    {
+        $sql = "SELECT currency
+            FROM account
+            WHERE id = :fromID";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':fromID', $fromID);
+        $stmt->execute();
+        $resultsOne = $stmt->fetch();
+
+        $fromCurrency = $resultsOne['currency'];
+
+        $sql = "SELECT balance, currency
+            FROM account
+            WHERE id = :toID";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':toID', $toID);
+        $stmt->execute();
+        $resultsTwo = $stmt->fetch();
+
+        $toCurrency = $resultsTwo['currency'];
+        
+        $currencyRate = $this->currRate;
+        $toAmount = ($fromAmount * $currencyRate);
+        //$timeStamp = time();
+        $timeStamp = new DateTime();
+        $date = $timeStamp->format('Y-m-d H:i:s');
+
+        $sql = "INSERT INTO transactions 
+            (from_amount, from_account, from_currency, to_amount, to_account, to_currency, currency_rate, date)
+            VALUES (:fromAmount, :fromID, :fromCurrency, :toAmount, :toID, :toCurrency, :currencyRate, :date)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':fromAmount', $fromAmount);
+        $stmt->bindParam(':fromID', $fromID);
+        $stmt->bindParam(':fromCurrency', $fromCurrency);
+        $stmt->bindParam(':toAmount', $toAmount);
+        $stmt->bindParam(':toID', $toID);
+        $stmt->bindParam(':toCurrency', $toCurrency);
+        $stmt->bindParam(':currencyRate', $currencyRate);
+        $stmt->bindParam(':date', $date);
+        $stmt->execute();
+        $resultsTwo = $stmt->fetchAll();
     }
 }

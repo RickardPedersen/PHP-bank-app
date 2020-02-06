@@ -51,8 +51,19 @@ try {
         //echo json_encode($transfer);
     }
 
+    //echo "https://api.exchangeratesapi.io/latest?base=$transfer->fromCurr&symbols=$transfer->toCurr";
+    $respObj = json_decode(
+        file_get_contents("https://api.exchangeratesapi.io/latest?base=$transfer->fromCurr&symbols=$transfer->toCurr")
+    );
+    $toCurrency = $transfer->toCurr;
+    $currRate = $respObj->rates->$toCurrency;
+    $transfer->currRate = $currRate;
+
     $bankTransfer = $transfer->transfer();
-    echo json_encode($bankTransfer);
+    //echo json_encode($bankTransfer);
+
+    $transfer->saveTransaction($fromId, $toId, $amount);
+    echo json_encode($transfer);
 } catch (Exception $e) {
     echo json_encode('Caught exception: ' . $e->getMessage());
 }

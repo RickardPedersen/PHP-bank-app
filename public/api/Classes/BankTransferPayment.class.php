@@ -20,7 +20,7 @@ class BankTransferPayment extends TransferPayment implements PaymentInterface
         }
         //$this->toAccIdOrPhone
 
-        $sql = "SELECT id
+        $sql = "SELECT currency
             FROM account
             WHERE id = :toAccount";
 
@@ -33,6 +33,7 @@ class BankTransferPayment extends TransferPayment implements PaymentInterface
         if (!$result) {
             return false;
         } else {
+            $this->toCurr = $result['currency'];
             return true;
         }
 
@@ -57,9 +58,10 @@ class BankTransferPayment extends TransferPayment implements PaymentInterface
         $sql = "UPDATE account
             SET balance = balance+:amount
             WHERE id = :toId";
-
+        
+        $convertedCurr = ($this->fromAmount * $this->currRate);
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':amount', $this->fromAmount);
+        $stmt->bindParam(':amount', $convertedCurr);
         $stmt->bindParam(':toId', $this->toAccIdOrPhone);
         $stmt->execute();
 

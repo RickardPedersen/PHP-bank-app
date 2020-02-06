@@ -67,7 +67,8 @@ $(function() {
 
         let fromAccountID = parseInt($('#account').html());
         let accountIdInput = parseInt($('select[name=bankTransferSelect]').val());
-        let amountInput = parseInt($('#transferAmount').val());
+        let amountInput = parseFloat($('#transferAmount').val()).toFixed(2);
+        console.log(amountInput)
         let transferData = {
             fromAccount: fromAccountID,
             toAccount: accountIdInput,
